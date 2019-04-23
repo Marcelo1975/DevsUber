@@ -8,6 +8,8 @@ import Reducers from './src/Reducers';
 
 import Preload from './src/screens/Preload';
 import Login from './src/screens/Login';
+import ForgotThePassword from './src/screens/ForgotThePassword';
+import Register from './src/screens/Register';
 
 const AppNavigator = createStackNavigator({
   Preload:{
@@ -15,6 +17,12 @@ const AppNavigator = createStackNavigator({
   },
   Login:{
     screen:Login
+  },
+  ForgotThePassword:{
+    screen:ForgotThePassword
+  },
+  Register:{
+    screen:Register
   }
 });
 

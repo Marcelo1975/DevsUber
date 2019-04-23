@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ImageBackground, TextInput, Image, KeyboardAvoidingView, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
-import { setEmailField, setPasswordField } from '../actions/AuthActions'; 
+import { setNameField, setEmailField, setPasswordField } from '../actions/AuthActions'; 
 
-export class Login extends Component {
+export class Register extends Component {
 
 	static navigationOptions = {
 		header:null
@@ -13,17 +13,11 @@ export class Login extends Component {
 		super(props);
 		this.state = {};
 
-		this.forgotPassword = this.forgotPassword.bind(this);
-		this.register = this.register.bind(this);
-	}
-
-	register() {
-		this.props.navigation.navigate('Register');
-	}
-
-	forgotPassword() {
-		this.props.navigation.navigate('ForgotThePassword');
-	}
+    }
+    
+    registerTrue() {
+        alert("WELCOME TO DEVSUBER...");
+    }
 
 	render() {
 		let buttonOpacity = 0.2;
@@ -33,7 +27,18 @@ export class Login extends Component {
 		return (
 			<ImageBackground source={require('../assets/bg.jpg')} style={styles.container}>
 				<KeyboardAvoidingView style={styles.keyboardContainer} behavior="padding" enabled>
-					<Text style={styles.header}>Login</Text>
+					<Text style={styles.header}>Cadastrar</Text>
+                    <View style={styles.fieldArea}>
+						<Text style={styles.fieldTitle}>NOME</Text>
+						<View style={styles.fieldItemArea}>
+							<TextInput style={styles.fieldItem} value={this.props.name} onChangeText={(text) => this.props.setNameField(text)} />
+							<View style={styles.fieldItemStatus}>
+								{this.props.nameValid &&
+									<Image style={styles.fieldItemStatusImg} source={require('../assets/checked.png')} />
+								}
+							</View>
+						</View>
+					</View>
 					<View style={styles.fieldArea}>
 						<Text style={styles.fieldTitle}>E-MAIL</Text>
 						<View style={styles.fieldItemArea}>
@@ -56,15 +61,7 @@ export class Login extends Component {
 							</View>
 						</View>
 					</View>
-					<View style={styles.bArea}>
-						<TouchableHighlight underlayColor={null} onPress={this.forgotPassword} style={styles.bText}>
-							<Text style={styles.bTextInt}>Esqueceu a senha?</Text>
-						</TouchableHighlight>
-						<TouchableHighlight underlayColor={null} onPress={this.register} style={styles.bText}>
-							<Text style={styles.bTextInt}>Cadastre-se</Text>
-						</TouchableHighlight>
-					</View>
-					<TouchableHighlight underlayColor={null} style={[styles.button, {opacity:buttonOpacity}]} onPress={()=>{}}>
+					<TouchableHighlight underlayColor={null} style={[styles.button, {opacity:buttonOpacity}]} onPress={this.registerTrue}>
 						<Image source={require('../assets/right.png')} style={styles.buttonImage} />
 					</TouchableHighlight>
 				</KeyboardAvoidingView>
@@ -128,30 +125,18 @@ const styles = StyleSheet.create({
 	buttonImage:{
 		width:32,
 		height:32
-	},
-	bArea:{
-		flexDirection:'row'
-	},
-	bText:{
-		flex:1,
-		height:36,
-		justifyContent:'center',
-		alignItems:'center'
-	},
-	bTextInt:{
-		color:'#FFF',
-		fontSize:15
 	}
 });
 
 const mapStateToProps = (state) => {
 	return {
-		status:state.auth.status,
+        status:state.auth.status,
+        name:state.auth.name,
 		email:state.auth.email,
 		pass:state.auth.pass,
 		emailValid:state.auth.emailValid,
 		passValid:state.auth.passValid
 	};
 };
-const LoginConnect = connect(mapStateToProps, {setEmailField, setPasswordField})(Login);
-export default LoginConnect;
+const RegisterConnect = connect(mapStateToProps, {setNameField, setEmailField, setPasswordField})(Register);
+export default RegisterConnect;
