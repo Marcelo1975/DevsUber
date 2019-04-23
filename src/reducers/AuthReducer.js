@@ -3,6 +3,7 @@ const initialState = {
 	email:'123',
 	pass1:'',
 	pass:'',
+	nameValid:false,
 	emailValid:false,
 	pass1Valid:false,
 	passValid:false,
@@ -12,7 +13,11 @@ const initialState = {
 const AuthReducer = (state = initialState, action) => {
 
 	if(action.type == 'setNameField') {
-		return {...state, name:action.payload.name};
+		let isValid = false;
+		if(action.payload.name.length >= 3) {
+			nameValid = true;
+		}
+		return {...state, name:action.payload.name, nameValid:isValid};
 	}
 
 	if(action.type == 'changeStatus') {
@@ -29,11 +34,11 @@ const AuthReducer = (state = initialState, action) => {
 	}
 
 	if(action.type == 'setPasswordField1') {
-		let isValid1 = false;
+		let isValid = false;
 		if(action.payload.pass1.length >= 5) {
-			isValid1 = true;
+			isValid = true;
 		}
-		return {...state, pass1:action.payload.pass1, pass1Valid:isValid1};
+		return {...state, pass1:action.payload.pass1, pass1Valid:isValid};
 	}
 
 	if(action.type == 'setPasswordField') {

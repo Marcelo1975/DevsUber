@@ -13,10 +13,12 @@ export class Register extends Component {
 		super(props);
 		this.state = {};
 
+		this.registerTrue = this.registerTrue.bind(this);
+
     }
     
     registerTrue() {
-        alert("WELCOME TO DEVSUBER...");
+        this.props.navigation.navigate('Login');
     }
 
 	render() {

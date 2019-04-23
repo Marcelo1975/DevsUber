@@ -17,7 +17,7 @@ export class ForgotThePassword extends Component {
     }
     
     Ir() {
-        if(this.props.pass1 == this.props.pass && this.props.pass1 || this.props.pass != '') {
+        if(this.props.pass1 == this.props.pass && this.props.pass1 != '' && this.props.pass != '') {
             this.props.navigation.navigate('Login');
         } else {
             alert("AS SENHAS NÃO CONFEREM...");
@@ -134,6 +134,7 @@ const mapStateToProps = (state) => {
         pass:state.auth.pass,
         pass1:state.auth.pass1,
 		emailValid:state.auth.emailValid,
+		pass1Valid:state.auth.pass1Valid,
 		passValid:state.auth.passValid
 	};
 };
