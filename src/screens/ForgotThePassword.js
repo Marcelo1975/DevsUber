@@ -1,67 +1,69 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ImageBackground, TextInput, Image, KeyboardAvoidingView, TouchableHighlight } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, TextInput, Image, KeyboardAvoidingView, TouchableHighlight, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
-import { setPasswordField1, setPasswordField } from '../actions/AuthActions'; 
+import { setEmailField, doForgotPassword } from '../actions/AuthActions'; 
 
 export class ForgotThePassword extends Component {
 
 	static navigationOptions = {
-		header:null
+		
 	};
 
 	constructor(props) {
 		super(props);
-        this.state = {};
-        
-        this.Ir = this.Ir.bind(this);
-    }
-    
-    Ir() {
-        if(this.props.pass1 == this.props.pass && this.props.pass1 != '' && this.props.pass != '') {
-            this.props.navigation.navigate('Login');
-        } else {
-            alert("AS SENHAS NÃO CONFEREM...");
-        }
-    }
+		this.state = {};
+
+		this.verifyStatus = this.verifyStatus.bind(this);
+		this.ForgotPassword = this.ForgotPassword.bind(this);
+
+	}
+
+	componentDidUpdate() {
+		this.verifyStatus();
+	}
+
+	verifyStatus() {
+		if(this.props.status === 1) {
+			// Manda para tela Home
+			alert("Manda pra tela HOME");
+		}
+	}
+
+	ForgotPassword() {
+		if(this.props.emailValid == true) {
+
+			this.props.doForgotPassword(this.props.email);
+		}
+	}
 
 	render() {
 		let buttonOpacity = 0.2;
-		if(this.props.emailValid == true && this.props.passValid == true) {
+		if(this.props.emailValid == true) {
 			buttonOpacity = 1;
-        }
-
+		}
 		return (
 			<ImageBackground source={require('../assets/bg.jpg')} style={styles.container}>
-				<KeyboardAvoidingView style={styles.keyboardContainer} behavior="padding" enabled>
-					<Text style={styles.header}>Recuperar Senha</Text>
-					<View style={styles.fieldArea}>
-						<Text style={styles.fieldTitle}>SENHA</Text>
-						<View style={styles.fieldItemArea}>
-							<TextInput style={styles.fieldItem} value={this.props.pass1} onChangeText={(text) => this.props.setPasswordField1(text)} />
-							<View style={styles.fieldItemStatus}>
-								{this.props.pass1Valid &&
-									<Image style={styles.fieldItemStatusImg} source={require('../assets/checked.png')} />
-								}
+				<ScrollView style={styles.scrollViewStyle}>
+					<KeyboardAvoidingView style={styles.keyboardContainer} behavior="padding" enabled>
+						<Text style={styles.header}>Esqueceu a Senha</Text>
+						<View style={styles.fieldArea}>
+							<Text style={styles.fieldTitle}>E-MAIL</Text>
+							<View style={styles.fieldItemArea}>
+								<TextInput style={styles.fieldItem} value={this.props.email} onChangeText={(text) => this.props.setEmailField(text)} />
+								<View style={styles.fieldItemStatus}>
+									{this.props.emailValid &&
+										<Image style={styles.fieldItemStatusImg} source={require('../assets/checked.png')} />
+									}
+								</View>
 							</View>
 						</View>
-					</View>
-					<View style={styles.fieldArea}>
-						<Text style={styles.fieldTitle}>CONFIRMAR SENHA</Text>
-						<View style={styles.fieldItemArea}>
-							<TextInput style={styles.fieldItem} value={this.props.pass} onChangeText={(text) => this.props.setPasswordField(text)} />
-							<View style={styles.fieldItemStatus}>
-								{this.props.passValid &&
-									<Image style={styles.fieldItemStatusImg} source={require('../assets/checked.png')} />
-								}
-							</View>
-						</View>
-					</View>
-					<TouchableHighlight underlayColor={null} style={[styles.button, {opacity:buttonOpacity}]} onPress={this.Ir}>
-						<Image source={require('../assets/right.png')} style={styles.buttonImage} />
-					</TouchableHighlight>
-				</KeyboardAvoidingView>
+					</KeyboardAvoidingView>
+				</ScrollView>
+				<TouchableHighlight underlayColor={null} style={[styles.button, {opacity:buttonOpacity}]} onPress={this.ForgotPassword}>
+					<Image source={require('../assets/right.png')} style={styles.buttonImage} />
+				</TouchableHighlight>
 			</ImageBackground>
-        );
+		);
 	}
 }
 
@@ -71,6 +73,9 @@ const styles = StyleSheet.create({
 		padding:20
 	},
 	keyboardContainer:{
+		flex:1
+	},
+	scrollViewStyle:{
 		flex:1
 	},
 	header:{
@@ -108,8 +113,8 @@ const styles = StyleSheet.create({
 	},
 	button:{
 		position:'absolute',
-		bottom:0,
-		right:0,
+		bottom:20,
+		right:20,
 		width:80,
 		height:80,
 		borderRadius:40,
@@ -120,23 +125,14 @@ const styles = StyleSheet.create({
 	buttonImage:{
 		width:32,
 		height:32
-	},
-	bTextInt:{
-		color:'#FFF',
-		fontSize:15
 	}
 });
 
 const mapStateToProps = (state) => {
 	return {
-		status:state.auth.status,
 		email:state.auth.email,
-        pass:state.auth.pass,
-        pass1:state.auth.pass1,
-		emailValid:state.auth.emailValid,
-		pass1Valid:state.auth.pass1Valid,
-		passValid:state.auth.passValid
+		emailValid:state.auth.emailValid
 	};
 };
-const ForgotThePasswordConnect = connect(mapStateToProps, {setPasswordField1, setPasswordField})(ForgotThePassword);
+const ForgotThePasswordConnect = connect(mapStateToProps, {setEmailField, doForgotPassword})(ForgotThePassword);
 export default ForgotThePasswordConnect;

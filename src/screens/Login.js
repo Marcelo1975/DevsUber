@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ImageBackground, TextInput, Image, KeyboardAvoidingView, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
-import { setEmailField, setPasswordField } from '../actions/AuthActions'; 
+import { setEmailField, setPasswordField, doLogin } from '../actions/AuthActions'; 
 
 export class Login extends Component {
 
@@ -15,6 +15,8 @@ export class Login extends Component {
 
 		this.forgotPassword = this.forgotPassword.bind(this);
 		this.register = this.register.bind(this);
+		this.loginAction = this.loginAction.bind(this);
+		this.verifyStatus = this.verifyStatus.bind(this);
 	}
 
 	register() {
@@ -23,6 +25,23 @@ export class Login extends Component {
 
 	forgotPassword() {
 		this.props.navigation.navigate('ForgotThePassword');
+	}
+
+	loginAction() {
+		if(this.props.emailValid == true && this.props.passValid == true) {
+			this.props.doLogin(this.props.email, this.props.pass);
+		}
+	}
+	
+	componentDidUpdate() {
+		this.verifyStatus();
+	}
+
+	verifyStatus() {
+		if(this.props.status === 1) {
+			// Manda para tela Home
+			alert("Manda pra tela HOME");
+		}
 	}
 
 	render() {
@@ -35,7 +54,7 @@ export class Login extends Component {
 				<KeyboardAvoidingView style={styles.keyboardContainer} behavior="padding" enabled>
 					<Text style={styles.header}>Login</Text>
 					<View style={styles.fieldArea}>
-						<Text style={styles.fieldTitle}>E-MAIL</Text>
+						<Text style={styles.fieldTitle}>E-MAIL -> {this.props.status}</Text>
 						<View style={styles.fieldItemArea}>
 							<TextInput style={styles.fieldItem} value={this.props.email} onChangeText={(text) => this.props.setEmailField(text)} />
 							<View style={styles.fieldItemStatus}>
@@ -48,7 +67,7 @@ export class Login extends Component {
 					<View style={styles.fieldArea}>
 						<Text style={styles.fieldTitle}>SENHA</Text>
 						<View style={styles.fieldItemArea}>
-							<TextInput style={styles.fieldItem} value={this.props.pass} onChangeText={(text) => this.props.setPasswordField(text)} />
+							<TextInput style={styles.fieldItem} secureTextEntry={true} value={this.props.pass} onChangeText={(text) => this.props.setPasswordField(text)} />
 							<View style={styles.fieldItemStatus}>
 								{this.props.passValid &&
 									<Image style={styles.fieldItemStatusImg} source={require('../assets/checked.png')} />
@@ -64,7 +83,7 @@ export class Login extends Component {
 							<Text style={styles.bTextInt}>Cadastre-se</Text>
 						</TouchableHighlight>
 					</View>
-					<TouchableHighlight underlayColor={null} style={[styles.button, {opacity:buttonOpacity}]} onPress={()=>{}}>
+					<TouchableHighlight underlayColor={null} style={[styles.button, {opacity:buttonOpacity}]} onPress={this.loginAction}>
 						<Image source={require('../assets/right.png')} style={styles.buttonImage} />
 					</TouchableHighlight>
 				</KeyboardAvoidingView>
@@ -153,5 +172,5 @@ const mapStateToProps = (state) => {
 		passValid:state.auth.passValid
 	};
 };
-const LoginConnect = connect(mapStateToProps, {setEmailField, setPasswordField})(Login);
+const LoginConnect = connect(mapStateToProps, {setEmailField, setPasswordField, doLogin})(Login);
 export default LoginConnect;

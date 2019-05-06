@@ -25,6 +25,7 @@ export class Preload extends Component {
 		switch(this.props.status) {
 			case 1:
 				// Manda para tela Home
+				alert("Manda pra tela HOME");
 				break;
 			case 2:
 				// Manda para tela de Login
