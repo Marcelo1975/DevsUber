@@ -63,16 +63,10 @@ export const doRegister = (name, email, password) => {
 export const doForgotPassword = (email) => {
 	return (dispatch) => {
 		makeForgotPass(email)
-			.then(function(status){
-				if(status == 2) {
-					alert("Foi enviado um de recuperação de senha para sua caixa de entrada!");
-				}
-				dispatch({
-					type:'changeStatus',
-					payload:{
-						status
-					}
-				});
+			.then(function(){
+
+				alert("Foi enviado um de recuperação de senha para sua caixa de entrada!");
+				
 			})
 			.catch(function(){
 				alert("Tente novamente mais tarde.");

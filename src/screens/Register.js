@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ImageBackground, TextInput, Image, KeyboardAvoidingView, TouchableHighlight, ScrollView } from 'react-native';
+import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { setNameField, setEmailField, setPasswordField, doRegister } from '../actions/AuthActions'; 
 
 export class Register extends Component {
 
 	static navigationOptions = {
-		
+		headerStyle:{
+			backgroundColor:'#0A5360'
+		},
+		headerTintColor:'#FFFFFF'
 	};
 
 	constructor(props) {
@@ -25,7 +29,12 @@ export class Register extends Component {
 	verifyStatus() {
 		if(this.props.status === 1) {
 			// Manda para tela Home
-			alert("Manda pra tela HOME");
+			this.props.navigation.dispatch(StackActions.reset({
+				index:0,
+				actions:[
+					NavigationActions.navigate({routeName:'HomeNav'})
+				]
+			}));
 		}
 	}
 

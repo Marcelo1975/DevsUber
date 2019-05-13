@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ImageBackground, TextInput, Image, KeyboardAvoidingView, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
+import { StackActions, NavigationActions } from 'react-navigation';
 import { setEmailField, setPasswordField, doLogin } from '../actions/AuthActions'; 
 
 export class Login extends Component {
@@ -40,7 +41,12 @@ export class Login extends Component {
 	verifyStatus() {
 		if(this.props.status === 1) {
 			// Manda para tela Home
-			alert("Manda pra tela HOME");
+			this.props.navigation.dispatch(StackActions.reset({
+				index:0,
+				actions:[
+					NavigationActions.navigate({routeName:'HomeNav'})
+				]
+			}));
 		}
 	}
 

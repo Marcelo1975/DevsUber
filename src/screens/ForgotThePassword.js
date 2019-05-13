@@ -6,27 +6,18 @@ import { setEmailField, doForgotPassword } from '../actions/AuthActions';
 export class ForgotThePassword extends Component {
 
 	static navigationOptions = {
-		
+		headerStyle:{
+			backgroundColor:'#0A5360'
+		},
+		headerTintColor:'#FFFFFF'
 	};
 
 	constructor(props) {
 		super(props);
 		this.state = {};
 
-		this.verifyStatus = this.verifyStatus.bind(this);
 		this.ForgotPassword = this.ForgotPassword.bind(this);
 
-	}
-
-	componentDidUpdate() {
-		this.verifyStatus();
-	}
-
-	verifyStatus() {
-		if(this.props.status === 1) {
-			// Manda para tela Home
-			alert("Manda pra tela HOME");
-		}
 	}
 
 	ForgotPassword() {
