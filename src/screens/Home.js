@@ -5,6 +5,7 @@ import MapView from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 
 export class Home extends Component {
+    watchId = null;
 
     static navigationOptions = {
         title:'DevsUber 1.0',
@@ -39,25 +40,29 @@ export class Home extends Component {
     }
 
     componentDidMount() {
-        this.setWarning(true, 'Procurando sua localização...');
-        /*
-            this.setWarning(false, '');
-        */
         this.getCurrentLoction();
     }
 
     getCurrentLoction = async () => {
+        this.setWarning(true, 'Procurando sua localização...');
         if(await this.requestLocPermission()) {
-            Geolocation.getCurrentPosition(
+            this.watchId = Geolocation.watchPosition(
                 (position) => {
                     this.setWarning(false, '');
-                    alert("PEGOU A LOCALIZAÇÃO");
+                    this.setState({
+                        currentLocation:{
+                            latitude:position.coords.latitude,
+                            longitude:position.coords.longitude,
+                            latitudeDelta:0.004,
+                            longitudeDelta:0.004
+                        }
+                    });
                 },
                 (error) => {
                     this.setWarning(false, '');
                     alert("ERROR NA LOC: "+error.message);
                 },
-                {enableHighAccuracy:true, timeout:15000, maximumAge:10000}
+                {enableHighAccuracy:true, interval:5000, timeout:15000, maximumAge:10000}
             );
         } else {
             this.setWarning(false, '');
@@ -122,7 +127,7 @@ export class Home extends Component {
             <View style={styles.container}>
                 <MapView
                     style={styles.map}
-                    initialRegion={this.state.currentLocation}
+                    region={this.state.currentLocation}
                 >
                 </MapView>
                 <Animated.View style={[styles.warnBox, {height:this.state.warnHeight}]}>
