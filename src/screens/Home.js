@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Animated } from 'react-native';
+import { View, Text, StyleSheet, Animated, Platform, PermissionsAndroid } from 'react-native';
 import { connect } from 'react-redux';
 import MapView from 'react-native-maps';
+import Geolocation from 'react-native-geolocation-service';
 
 export class Home extends Component {
 
@@ -33,14 +34,57 @@ export class Home extends Component {
         };
 
         this.setWarning = this.setWarning.bind(this);
+        this.getCurrentLoction = this.getCurrentLoction.bind(this);
+        this.requestLocPermission = this.requestLocPermission.bind(this);
     }
 
     componentDidMount() {
         this.setWarning(true, 'Procurando sua localização...');
-
-        setTimeout(() => {
+        /*
             this.setWarning(false, '');
-        }, 3000);
+        */
+        this.getCurrentLoction();
+    }
+
+    getCurrentLoction = async () => {
+        if(await this.requestLocPermission()) {
+            Geolocation.getCurrentPosition(
+                (position) => {
+                    this.setWarning(false, '');
+                    alert("PEGOU A LOCALIZAÇÃO");
+                },
+                (error) => {
+                    this.setWarning(false, '');
+                    alert("ERROR NA LOC: "+error.message);
+                },
+                {enableHighAccuracy:true, timeout:15000, maximumAge:10000}
+            );
+        } else {
+            this.setWarning(false, '');
+        }
+    }
+
+    requestLocPermission = async () => {
+        if(Platform.OS == 'android') {
+            try {
+                const g = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                    {
+                        title:'Pegar localização',
+                        message:'Este aplicativo precisa acessar sua localização'
+                    }
+                );
+                if(g == PermissionsAndroid.RESULTS.GRANTED) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch(e) {
+                return false;
+            }
+        } else {
+            return true;
+        }
     }
 
     setWarning(status, msg) {

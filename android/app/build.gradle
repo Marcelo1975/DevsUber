@@ -138,6 +138,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-geolocation-service')
     implementation project(':react-native-gesture-handler')
     implementation project(':react-native-maps')
     implementation fileTree(dir: "libs", include: ["*.jar"])
@@ -150,4 +151,11 @@ dependencies {
 task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
+}
+
+// Tentativa de correção
+allprojects {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+    }
 }
