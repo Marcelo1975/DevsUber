@@ -12,6 +12,7 @@
     "react-native-geolocation-service": "^2.0.1",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-maps": "^0.24.2",
+    "react-native-maps-directions": "^1.7.0",
     "react-navigation": "^3.8.1",
     "react-redux": "^7.0.2",
     "redux": "^4.0.1",
