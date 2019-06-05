@@ -47,10 +47,23 @@ export class Home extends Component {
         this.getCurrentLoction = this.getCurrentLoction.bind(this);
         this.requestLocPermission = this.requestLocPermission.bind(this);
         this.seachBoxClick = this.seachBoxClick.bind(this);
+        this.realignMap = this.realignMap.bind(this);
     }
 
     componentDidMount() {
         this.getCurrentLoction();
+    }
+
+    realignMap() {
+        this.map.fitToSuppliedMarkers(['OriginMarker', 'DestinationMarker'], {
+            edgePadding:{
+                left:100,
+                top:200,
+                right:100,
+                bottom:100
+            },
+            animated:true
+        });
     }
 
     getCurrentLoction = async () => {
@@ -67,6 +80,8 @@ export class Home extends Component {
                             longitudeDelta:0.004
                         }
                     });
+
+                    this.realignMap();
                 },
                 (error) => {
                     this.setWarning(false, '');
@@ -139,18 +154,22 @@ export class Home extends Component {
                 longitude:item.lng
             }
         });
+        setTimeout(() => {
+            this.realignMap();
+        }, 1000);
     }
 
     render() {
         return (
             <View style={styles.container}>
                 <MapView
+                    ref={obj => this.map = obj}
                     style={styles.map}
                     region={this.state.currentLocation}
                 >
-                    <MapView.Marker coordinate={this.state.currentLocation} />
+                    <MapView.Marker identifier="OriginMarker" coordinate={this.state.currentLocation} />
                     {this.state.destLocation.latitude != 0 &&
-                        <MapView.Marker coordinate={this.state.destLocation} />
+                        <MapView.Marker identifier="DestinationMarker" coordinate={this.state.destLocation} />
                     }
                     {this.state.destLocation.latitude != 0 &&
                         <MapViewDirections
