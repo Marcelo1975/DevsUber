@@ -46,7 +46,7 @@ export class Home extends Component {
         this.setWarning = this.setWarning.bind(this);
         this.getCurrentLoction = this.getCurrentLoction.bind(this);
         this.requestLocPermission = this.requestLocPermission.bind(this);
-        this.seachBoxClick = this.seachBoxClick.bind(this);
+        this.searchBoxClick = this.searchBoxClick.bind(this);
         this.realignMap = this.realignMap.bind(this);
     }
 
@@ -58,7 +58,7 @@ export class Home extends Component {
         this.map.fitToSuppliedMarkers(['OriginMarker', 'DestinationMarker'], {
             edgePadding:{
                 left:100,
-                top:200,
+                top:400,
                 right:100,
                 bottom:100
             },
@@ -147,7 +147,7 @@ export class Home extends Component {
         }
     }
 
-    seachBoxClick(item) {
+    searchBoxClick(item) {
         this.setState({
             destLocation:{
                 latitude:item.lat,
@@ -184,7 +184,7 @@ export class Home extends Component {
                 <Animated.View style={[styles.warnBox, {height:this.state.warnHeight}]}>
                     <Text style={styles.warnText}>{this.state.loadingMsg}</Text>
                 </Animated.View>
-                <SearchBox dataClick={this.seachBoxClick} />
+                <SearchBox dataClick={this.searchBoxClick} />
             </View>
         );
     }

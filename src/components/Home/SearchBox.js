@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, StyleSheet, ScrollView } from 'react-native';
-import { makeLocationSeach } from '../../DevsUberAPI';
+import { makeLocationSearch } from '../../DevsUberAPI';
 import SearchBoxItem from './SearchBoxItem';
 
 export default class SearchBox extends Component {
@@ -14,7 +14,7 @@ export default class SearchBox extends Component {
         };
 
         this.txtFill = this.txtFill.bind(this);
-        this.doSeach = this.doSeach.bind(this);
+        this.doSearch = this.doSearch.bind(this);
     }
 
     txtFill(text) {
@@ -24,11 +24,11 @@ export default class SearchBox extends Component {
             clearTimeout(this.timer);
         }
 
-        this.timer = setTimeout(this.doSeach, 1500);
+        this.timer = setTimeout(this.doSearch, 1500);
     }
 
-    doSeach() {
-        makeLocationSeach(this.state.txt)
+    doSearch() {
+        makeLocationSearch(this.state.txt)
             .then((results)=>{
                 this.setState({results});
             })

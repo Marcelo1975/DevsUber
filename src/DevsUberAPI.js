@@ -41,13 +41,13 @@ export const makeForgotPass = function(email) {
     });
 };
 
-export const makeLocationSeach = function(locTxt){
+export const makeLocationSearch = function(locTxt){
     return new Promise(function(resolve, reject){
         //Temporariamente
         setTimeout(function(){
             let array = [
                 {id:1,label:'Rua alguma 100', lat:-10, lng:-11},
-                {id:2, label:'Rua alguma1 150', lat:-23.6892435, lng:-46.7919848},
+                {id:2, label:'Rua de teste 150', lat:-23.6892435, lng:-46.7919848},
                 {id:3, label:'Rua alguma2 10', lat:-60, lng:-61},
                 {id:4, label:'Rua alguma3 500', lat:-40, lng:-41}
             ];
