@@ -6,6 +6,7 @@ import Geolocation from 'react-native-geolocation-service';
 import MapViewDirections from 'react-native-maps-directions';
 
 import SearchBox from '../components/Home/SearchBox';
+import TripArea from '../components/Home/TripArea';
 
 const GOOGLE_MAPS_APIKEY = "AIzaSyA2KeS4ZYdDSEMalH86f_PAIukTNGJsNDo";
 
@@ -54,6 +55,8 @@ export class Home extends Component {
         this.searchBoxClick = this.searchBoxClick.bind(this);
         this.realignMap = this.realignMap.bind(this);
         this.mapRegionChange = this.mapRegionChange.bind(this);
+        this.tripCancelClick = this.tripCancelClick.bind(this);
+        this.tripSelectClick = this.tripSelectClick.bind(this);
     }
 
     componentDidMount() {
@@ -168,6 +171,13 @@ export class Home extends Component {
             mapLocation:region
         });
     }
+    tripCancelClick() {
+
+    }
+
+    tripSelectClick() {
+        
+    }
 
     render() {
         return (
@@ -195,7 +205,15 @@ export class Home extends Component {
                 <Animated.View style={[styles.warnBox, {height:this.state.warnHeight}]}>
                     <Text style={styles.warnText}>{this.state.loadingMsg}</Text>
                 </Animated.View>
-                <SearchBox dataClick={this.searchBoxClick} />
+                <SearchBox inputBlocked={this.state.destLocation.latitude != 0} dataClick={this.searchBoxClick} />
+                {this.state.destLocation.latitude != 0 &&
+                    <TripArea
+                        origin={this.state.currentLocation}
+                        destination={this.state.destLocation}
+                        cancelClick={this.tripCancelClick}
+                        selectClick={this.tripSelectClick}
+                    />
+                }
                 {this.state.recenterMapActive &&
                     <TouchableHighlight underlayColor="#CCCCCC" style={styles.recenterMap} onPress={this.realignMap}>
                         <Image style={styles.recenterMapImage} source={require('../assets/map-center.png')} />

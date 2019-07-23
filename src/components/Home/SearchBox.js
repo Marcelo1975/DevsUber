@@ -41,7 +41,7 @@ export default class SearchBox extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.box}>
-                    <TextInput style={styles.input} value={this.state.txt} onChangeText={this.txtFill} placeholder="Digite seu destino..." />
+                    <TextInput editable={!this.props.inputBlocked} style={styles.input} value={this.state.txt} onChangeText={this.txtFill} placeholder="Digite seu destino..." />
                 </View>
                 {this.state.results.length > 0 && 
                     <ScrollView style={styles.result}>

@@ -56,3 +56,18 @@ export const makeLocationSearch = function(locTxt){
 
     });
 };
+
+export const makeTripSearch = function(origin, dest){
+    return new Promise(function(resolve, reject){
+        //Temporariamente
+        setTimeout(function(){
+            let array = [
+                {id:1, type:'Barato', price:12},
+                {id:2, type:'Medio', price:15},
+                {id:3, type:'Caro', price:25}
+            ];
+            resolve(array);
+        }, 2000);
+
+    });
+};
